@@ -1,4 +1,5 @@
 import { Op } from 'sequelize';
+
 import { ApiError } from '~/errors/api-error';
 import { withTryCatch } from '~/helpers/with-try-catch';
 import { Preset, Image, CroppedImage } from '~/models';
@@ -14,7 +15,11 @@ class ImageController {
                 throw ApiError.notFound('Image not found');
             }
 
-            res.json({ url: image.originalLink });
+            const url = image.originalLink;
+
+            res.redirect(url);
+
+            return;
         }
 
         const preset = await Preset.findOne({
@@ -37,7 +42,9 @@ class ImageController {
             throw ApiError.notFound('Image not found');
         }
 
-        res.json({ url: image.link });
+        const url = image.link;
+
+        res.redirect(url);
     });
 }
 

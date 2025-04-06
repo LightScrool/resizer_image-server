@@ -96,7 +96,7 @@ class Image extends Model<
 > {
     declare id: string;
 
-    declare originalLink: string | null;
+    declare originalLink: string;
 
     declare name: string | null;
     declare description: string | null;

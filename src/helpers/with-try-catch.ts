@@ -18,6 +18,7 @@ export const withTryCatch = <
                 next(e);
                 return;
             }
+            console.log(e);
             next(ApiError.internal());
         }
     };
