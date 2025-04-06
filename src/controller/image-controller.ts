@@ -1,4 +1,5 @@
 import { Op } from 'sequelize';
+import request from 'request';
 
 import { ApiError } from '~/errors/api-error';
 import { withTryCatch } from '~/helpers/with-try-catch';
@@ -17,7 +18,7 @@ class ImageController {
 
             const url = image.originalLink;
 
-            res.redirect(url);
+            request(url).pipe(res);
 
             return;
         }
@@ -44,7 +45,7 @@ class ImageController {
 
         const url = image.link;
 
-        res.redirect(url);
+        request(url).pipe(res);
     });
 }
 
