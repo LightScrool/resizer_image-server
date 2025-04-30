@@ -5,7 +5,6 @@ import cors from 'cors';
 import { errorHandlingMiddleware } from './middleware/error-handling-middleware';
 import { logInfoMiddleware } from './middleware/log-info-middleware';
 import { router } from './routes';
-import { initDb } from './models';
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -23,8 +22,6 @@ app.use(errorHandlingMiddleware);
 
 const start = async () => {
     try {
-        await initDb();
-
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
         });

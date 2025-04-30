@@ -1,6 +1,4 @@
-import { Op } from 'sequelize';
-
-import { Preset, Image, CroppedImage } from '~/models';
+import { S3_BUCKET_NAME, S3_ENDPOINT_URL } from '~/config';
 
 type Params = {
     projectAlias: string;
@@ -8,34 +6,12 @@ type Params = {
     presetAlias: string;
 };
 
-export const getImageUrl = async ({
+export const getImageUrl = ({
     projectAlias,
     imageId,
     presetAlias,
-}: Params): Promise<string | null> => {
-    if (presetAlias === 'original') {
-        const image = await Image.findOne({
-            where: { [Op.and]: { id: imageId, ProjectAlias: projectAlias } },
-        });
-
-        return image?.originalLink || null;
-    }
-
-    const preset = await Preset.findOne({
-        where: {
-            [Op.and]: { ProjectAlias: projectAlias, alias: presetAlias },
-        },
-    });
-
-    if (!preset) {
-        return null;
-    }
-
-    const image = await CroppedImage.findOne({
-        where: {
-            [Op.and]: { PresetId: preset.id, ImageId: imageId },
-        },
-    });
-
-    return image?.link || null;
+}: Params): string => {
+    return [S3_ENDPOINT_URL, S3_BUCKET_NAME, projectAlias, imageId, presetAlias]
+        .map((str) => (str.endsWith('/') ? str.slice(0, -1) : str))
+        .join('/');
 };
